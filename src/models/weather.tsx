@@ -1,8 +1,7 @@
 export type Weather = {
-    icon: string;
-    temperature: number;
-    day: string;
-    index: number;
+  icon: string;
+  temp: number;
+  datetimeEpoch: number;
 }
 
 export type Forecast = {

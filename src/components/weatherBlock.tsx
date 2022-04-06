@@ -1,8 +1,15 @@
 import React from 'react';
-import * as Weather from "../models/weather"
+import { Weather } from "../models/weather"
 import { getIcon } from '../util/icons'
+import { formatDate, farToCel } from '../util/formatting'
 
-export default class WeatherBlock extends React.Component<Weather.Weather, {}>{
+
+type Props = {
+    day?: Weather,
+    index: number
+}
+
+export default class WeatherBlock extends React.Component<Props, {}>{
 
     getBorderRadius(){
         switch(this.props.index){
@@ -15,10 +22,15 @@ export default class WeatherBlock extends React.Component<Weather.Weather, {}>{
     render(){
 
         return (
-            <div style={this.getBorderRadius()} className='weatherBlock-con'>
-                <p>{this.props.day}</p>
-                <img src={getIcon(this.props.icon)} alt="img_weather"/>
-                <p>{this.props.temperature}&#176;</p>
+            <div style={this.getBorderRadius()} className='flex-col centered aligned weatherBlock-con'>
+                {this.props.day &&
+                <div className="flex-col aligned weatherBlock">
+                    <p className='m0'>{formatDate(this.props.day.datetimeEpoch)}</p>
+                    
+                    <img src={getIcon(this.props.day.icon)} alt="img_weather"/>
+                    <p className='temp'>{Math.round(farToCel(this.props.day.temp))}&#176;</p>
+                </div>
+                }
             </div>
         )
     }
