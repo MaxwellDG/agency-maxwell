@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles/styles.less';
-import * as DarkSky from './apis/darksky'
+import * as DarkSky from './apis/visualCrossing'
 import { CITY_COORDS } from './util/constants'
 import { Weather, Forecast } from "./models/weather"
 
@@ -23,10 +23,10 @@ export default class App extends React.Component<{}, AppState>{
   componentDidMount(){
     CITY_COORDS.forEach((j, i) => {
       DarkSky.getWeather(j.coords).then(k => {
-        console.log(j)
+        console.log(k)
         const day: Forecast = {
           city: j.name,
-          currently: k.data.currently,
+          currently: k.data.currentConditions,
           daily: k.data.daily.data.map((l: any, index: number) => {
             // Index 0 is the same date as 'currently' property but set at midnight
             if(index >= 1 && index <= 4){
@@ -40,7 +40,7 @@ export default class App extends React.Component<{}, AppState>{
         this.setState(prevState => ({
           weathers: [...prevState.weathers, day]
         }));
-      })
+      }).catch(e => console.log(e.message))
     })
   }
 
